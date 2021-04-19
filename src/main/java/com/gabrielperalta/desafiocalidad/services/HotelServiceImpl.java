@@ -43,12 +43,9 @@ public class HotelServiceImpl implements HotelService{
         if (dateTo != null)
             hotelsFilter.put("dateTo", dateTo);
         if (destination != null){
-            if (validateDestination(destination))
-                hotelsFilter.put("destination", destination);
-            else
-                throw new IncorrectPlaceException("Destination '"+ destination +"' doesn't exists. Please try again.");
+            validateDestination(destination);
+            hotelsFilter.put("destination", destination);
         }
-
 
         if (dateFrom != null && dateTo != null){
             LocalDate from = dateValidator.validateDate(dateFrom);
@@ -88,6 +85,8 @@ public class HotelServiceImpl implements HotelService{
         if (payloadDTO.getBooking().getPeople().size() != typeRoom)
             throw new RoomCapacityException("The room capacity is " + typeRoom + ". You can't set " + payloadDTO.getBooking().getPeople().size() + " people.");
 
+        validateDestination(payloadDTO.getBooking().getDestination());
+
         emailValidator.validateEmail(payloadDTO.getUserName());
 
         for (PeopleDTO people : payloadDTO.getBooking().getPeople()) {
@@ -103,6 +102,9 @@ public class HotelServiceImpl implements HotelService{
         HotelDTO modifidedHotel = new HotelDTO();
         for (HotelDTO hotel : hoteles) {
             if (hotel.getHotelCode().equals(payloadDTO.getBooking().getHotelCode())){
+                if (hotel.getBooked())
+                    throw new Exception("The hotel with code '" + hotel.getHotelCode() + "' is already booked.");
+
                 precioPorNoche = hotel.getAmount();
                 modifidedHotel = hotel;
                 break;
@@ -172,7 +174,7 @@ public class HotelServiceImpl implements HotelService{
         return hoteles;
     }
 
-    public Boolean validateDestination(String destination){
+    public void validateDestination(String destination) throws IncorrectPlaceException {
         List<HotelDTO> hoteles = hotelRepository.getAllHotels();
         Boolean destinationExists = false;
         for (HotelDTO hotel : hoteles) {
@@ -181,6 +183,7 @@ public class HotelServiceImpl implements HotelService{
                 break;
             }
         }
-        return destinationExists;
+        if (!destinationExists)
+            throw new IncorrectPlaceException("Destination '"+ destination +"' doesn't exists. Please try again.");
     }
 }

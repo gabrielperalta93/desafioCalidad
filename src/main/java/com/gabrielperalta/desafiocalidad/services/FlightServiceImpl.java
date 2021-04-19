@@ -44,16 +44,12 @@ public class FlightServiceImpl implements FlightService{
         if (dateTo != null)
             flightsFilter.put("dateTo", dateTo);
         if (origin != null){
-            if (validateOrigin(origin))
-                flightsFilter.put("origin", origin);
-            else
-                throw new IncorrectPlaceException("Origin '"+ origin +"' doesn't exists. Please try again.");
+            validateOrigin(origin);
+            flightsFilter.put("origin", origin);
         }
         if (destination != null){
-            if (validateDestination(destination))
-                flightsFilter.put("destination", destination);
-            else
-                throw new IncorrectPlaceException("Destination '"+ destination +"' doesn't exists. Please try again.");
+            validateDestination(destination);
+            flightsFilter.put("destination", destination);
         }
 
         if (dateFrom != null && dateTo != null){
@@ -99,6 +95,9 @@ public class FlightServiceImpl implements FlightService{
         }
         if (precioPorPersona == 0)
             throw new Exception("The flight number '" + payloadDTO.getFlightReservation().getFlightNumber() + "' doesn't exists.");
+
+        validateOrigin(payloadDTO.getFlightReservation().getOrigin());
+        validateDestination(payloadDTO.getFlightReservation().getDestination());
 
         amount = cantidadPersonas * precioPorPersona;
         if (payloadDTO.getFlightReservation().getPaymentMethod().getType().toLowerCase().equals("credit")){
@@ -156,7 +155,7 @@ public class FlightServiceImpl implements FlightService{
         return flights;
     }
 
-    public Boolean validateDestination(String destination){
+    public void validateDestination(String destination) throws IncorrectPlaceException {
         List<FlightDTO> fligths = flightRepository.getAllFlights();
         Boolean destinationExists = false;
         for (FlightDTO fligth : fligths) {
@@ -165,10 +164,11 @@ public class FlightServiceImpl implements FlightService{
                 break;
             }
         }
-        return destinationExists;
+        if (!destinationExists)
+            throw new IncorrectPlaceException("Destination '"+ destination +"' doesn't exists. Please try again.");
     }
 
-    public Boolean validateOrigin(String origin){
+    public void validateOrigin(String origin) throws IncorrectPlaceException {
         List<FlightDTO> fligths = flightRepository.getAllFlights();
         Boolean originExists = false;
         for (FlightDTO fligth : fligths) {
@@ -177,6 +177,7 @@ public class FlightServiceImpl implements FlightService{
                 break;
             }
         }
-        return originExists;
+        if (!originExists)
+            throw new IncorrectPlaceException("Origin '"+ origin +"' doesn't exists. Please try again.");
     }
 }
