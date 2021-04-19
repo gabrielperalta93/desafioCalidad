@@ -4,7 +4,7 @@ Se presenta a continuación la documentación necesaria del desafío de calidad.
 
 Se utilizaron los archivos 'dbHotel.csv' y 'dbFlights.csv' para ser utilizados como bases de datos, el resto de los archivos que también poseen una extensión .csv estan creados con el fin de ser utilizados para diferentes tests que se llevaron a cabo.
 
-##Controllers
+## Controllers
 
 Se crearon dos controllers para el desarrollo del desafío.
 
@@ -92,7 +92,7 @@ Ejemplo de consulta de Endpoints:
     
 * Recordar que si se copia el json a postman, se puede formatear al mismo haciendo Ctrl + B
 
-##Services
+## Services
 
 Se crearon dos services (interfaces + impl) para el desarrollo del desafío
 
@@ -111,7 +111,7 @@ Se crearon dos services (interfaces + impl) para el desarrollo del desafío
     * validateDestination(String destination): método para validar que el destino elegido por el usuario en un filtro exista. Si no existe, retornará un valor 'false' que implicará una excepcion de búsqueda.
     * validateOrigin(String origin): método para validar que el origen elegido por el usuario en un filtro exista. Si no existe, retornará un valor 'false' que implicará una excepcion de búsqueda.
     
-##Repositories
+## Repositories
 
 Se crearon dos repositories (interfaces + impl) para el desarrollo del desafío
 * **HotelRepository**:
@@ -122,7 +122,7 @@ Se crearon dos repositories (interfaces + impl) para el desarrollo del desafío
 * **FlightRepository**:
 * Posee el método getAllFlights(): método para devolver todos los vuelos que existen, leídos del archivo dbFlights.csv
 
-##Utils
+## Utils
 
 * **DateValidator**: util para validación general de fechas. Se utiliza tanto para vuelos como para hoteles.
 * Posee los siguientes métodos:
@@ -136,7 +136,7 @@ Se crearon dos repositories (interfaces + impl) para el desarrollo del desafío
 
 * **MockCreator**: utili utilizado para la validación de tests. Posee diferentes métodos que son utilizados para crear json o conjuntos de datos mockeados que sirven para diferentes escenarios en los tests desarrollados.
 
-##Tests
+## Tests
 
 * **HotelControllerTest**:
     * getAll_OK(): test para verificar que una lista de hoteles mockeadas corresponde con lo que retorna el repository. **ESTE TEST PUEDE FALLAR LUEGO DE QUE SE REALICE LA RESERVA DE UN HOTEL, DEBIDO A QUE EL CAMPO BOOKED CAMBIA DE 'NO' A 'SI' Y POR LO TANTO SERÁ MODIFICADO.**
