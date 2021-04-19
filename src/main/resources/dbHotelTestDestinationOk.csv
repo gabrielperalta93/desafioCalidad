@@ -1,0 +1,3 @@
+hotelId,codigoHotel,nombre,lugar,tipoHabitacion,precioNoche,disponibleDesde,disponibleHasta,reservado
+3,HB-0001,Hotel Bristol,Buenos Aires,Single,$5435,10/02/2021,19/03/2021,NO
+4,BH-0002,Hotel Bristol 2,Buenos Aires,Double,$7200,12/02/2021,17/04/2021,NO
